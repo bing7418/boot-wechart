@@ -25,7 +25,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean package --file pom.xml
     - name: BuildDockerImage
-      run:
+      run: |
           docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
           docker build . -t ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
           docker push ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
@@ -33,7 +33,7 @@ jobs:
           docker push ${{ secrets.REGISTRY }}:latest
   pull-docker:
     needs: [build]
-    name: Pull Docker
+    name: PullDocker
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
