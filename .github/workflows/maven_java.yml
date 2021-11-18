@@ -44,9 +44,9 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            docker stop $(docker ps --filter ancestor=${{ secrets.REGISTRY }} -q)
-            docker rm -f $(docker ps -a --filter ancestor=${{ secrets.REGISTRY }}:latest -q)
-            docker rmi -f $(docker images  ${{ secrets.REGISTRY }}:latest -q)
+            docker stop $(docker ps --filter ancestor=registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action -q)
+            docker rm -f $(docker ps -a --filter ancestor=registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest -q)
+            docker rmi -f $(docker images  registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest -q)
             docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
-            docker pull ${{ secrets.REGISTRY }}:latest
-            docker run -d -p 8080:8080 ${{ secrets.REGISTRY }}:latest
+            docker pull registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest
+            docker run -d -p 8080:8080 registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest
