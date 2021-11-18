@@ -28,4 +28,4 @@ jobs:
       run: |
           docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
           docker build . -t wechart:$GITHUB_RUN_NUMBER
-          docker push wechart:$GITHUB_RUN_NUMBER
+          docker push ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
