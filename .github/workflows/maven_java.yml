@@ -29,8 +29,8 @@ jobs:
           docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
           docker build . -t wechart:$GITHUB_RUN_NUMBER
           docker push wechart:$GITHUB_RUN_NUMBER
-          docker tag $(docker images wechart:$GITHUB_RUN_NUMBER -q) wechart:latest
-          docker push ${{ secrets.REGISTRY }}:latest
+          docker tag $(docker images ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER -q) wechart:latest
+          docker push wechart:latest
   pull-docker:
     needs: [build]
     name: PullDocker
