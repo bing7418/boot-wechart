@@ -27,10 +27,10 @@ jobs:
     - name: BuildDockerImage
       run: |
           docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
-          docker build . -t ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
-          docker push ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
-          docker tag $(docker images ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER -q) ${{ secrets.REGISTRY }}:latest
-          docker push ${{ secrets.REGISTRY }}:latest
+          docker build . -t wechart:$GITHUB_RUN_NUMBER
+          docker push wechart:$GITHUB_RUN_NUMBER
+          docker tag $(docker images wechart:$GITHUB_RUN_NUMBER -q) wechart:latest
+          docker push wechart:latest
   pull-docker:
     needs: [build]
     name: PullDocker
@@ -44,9 +44,9 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            docker stop $(docker ps -a | grep -w registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action| awk '{print $1}')
-            docker rm -f $(docker ps -a | grep -w registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action| awk '{print $1}')
-            docker rmi -f $(docker images  registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest -q)
+            docker stop $(docker ps -a | grep -w wechart| awk '{print $1}')
+            docker rm -f $(docker ps -a | grep -w wechart| awk '{print $1}')
+            docker rmi -f $(docker images  wechart:latest -q)
             docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
-            docker pull registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest
-            docker run -d -p 8080:8080 registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest
+            docker pull wechart
+            docker run -d -p 8080:8080 wechart:latest
