@@ -25,7 +25,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean package --file pom.xml
     - name: BuildDockerImage
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build --build-arg JAR_FILE=wechart-0.0.1-SNAPSHOT.jar -t wechart:v1 .
     - name: Publish to Docker Repository
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
