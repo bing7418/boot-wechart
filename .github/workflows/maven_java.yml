@@ -47,3 +47,4 @@ jobs:
             docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
             docker pull wechart:latest
             docker run -d -p 8080:8080 wechart:latest
+            docker push wechart:$GITHUB_RUN_NUMBER
