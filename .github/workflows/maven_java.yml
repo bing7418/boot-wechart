@@ -25,7 +25,27 @@ jobs:
     - name: Build with Maven
       run: mvn clean package --file pom.xml
     - name: BuildDockerImage
-      run: |
+        run: |
           docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
-          docker build . -t wechart:$GITHUB_RUN_NUMBER
-          docker push ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
+          docker build . -t ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER
+          docker tag $(docker images ${{ secrets.REGISTRY }}:$GITHUB_RUN_NUMBER -q) ${{ secrets.REGISTRY }}:latest
+          docker push ${{ secrets.REGISTRY }}:latest
+  pull-docker:
+    needs: [build]
+    name: Pull Docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            docker stop $(docker ps -a | grep -w registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action| awk '{print $1}')
+            docker rm -f $(docker ps -a | grep -w registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action| awk '{print $1}')
+            docker rmi -f $(docker images  registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest -q)
+            docker login --username=${{ secrets.YUN_USERNAME }} --password ${{ secrets.YUN_PASSWORD }} registry.cn-hangzhou.aliyuncs.com
+            docker pull registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest
+            docker run -d -p 8080:8080 registry.cn-hangzhou.aliyuncs.com/bjiang123/git_action:latest
