@@ -21,7 +21,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean package --file pom.xml
     - name: BuildDockerImage
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     - name: Publish to Docker Repository
