@@ -32,7 +32,7 @@ jobs:
           docker push ${{ secrets.REGISTRY }}:latest
   pull-docker:
     needs: [build]
-    name: PullDocker
+    name: Pull_Docker
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
