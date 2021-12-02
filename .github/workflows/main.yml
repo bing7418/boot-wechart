@@ -26,7 +26,6 @@ jobs:
           cd target
           sshpass -p 'Ab741894872' sftp -oPort=22  root@119.3.26.3 
           put -r "wechart-0.0.1-SNAPSHOT.jar"
-		      # 部署到服务器
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
