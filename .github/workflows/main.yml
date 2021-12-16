@@ -17,7 +17,7 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         cache: maven
-    - name: Build with Maven
+    - name: Build with Maven2
       run: mvn clean package --file pom.xml
     - name: 将 JAR 包部署到服务器
       uses: garygrossgarten/github-action-scp@release
