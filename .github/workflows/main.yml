@@ -28,7 +28,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
                # 部署到服务器
-    - name: Deploy
+    - name: DeployJava
       uses: appleboy/ssh-action@master
       with:
           host: ${{ secrets.HOST }}
