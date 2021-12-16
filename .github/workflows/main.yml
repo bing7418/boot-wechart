@@ -37,4 +37,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /home/wechart
+            kill -9 $(ps -ef | grep wechart-0.0.1-SNAPSHOT.jar | grep -v grep | awk \'{print $2}\')
             nohup java -jar wechart-0.0.1-SNAPSHOT.jar > wechart.log 2>&1 &
